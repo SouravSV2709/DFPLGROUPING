@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Team Assigner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.2/dist/full.css" rel="stylesheet">
+    <style>
+        body {
+            background: lightcyan;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        main {
+            flex-grow: 1; /* Takes up the available space */
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Bubble Animation */
+        .bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.9;
+            animation: floatBubbles 5s infinite ease-in-out;
+        }
+
+        @keyframes floatBubbles {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .marquee {
+            display: flex;
+            align-items: baseline;
+            animation: marquee 25s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-200%);
+            }
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            /* Creates 3D perspective */
+        }
+
+        .flip-inner {
+            transform-style: preserve-3d;
+            animation: flip 8s infinite;
+            /* Automatic flipping */
+        }
+
+        .flip-front,
+        .flip-back {
+            backface-visibility: hidden;
+            /* Hide the back when front is visible */
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            /* Position the back face */
+        }
+
+        @keyframes flip {
+
+            0%,
+            100% {
+                transform: rotateY(0deg);
+                /* Start and end at front */
+            }
+
+            50% {
+                transform: rotateY(180deg);
+                /* Show the back in the middle */
+            }
+        }
+
+    </style>
+    
+</head>
+
+<body class="text-neutral">
+
+    <div class="marquee space-x-2 text-red-500">
+        <p>Digitalize your auction experience with Auction Arena! Reach us at 📞 9547652702 (Sourav Mukherjee). </p>
+    </div> 
+
+    <header class="p-0 m-0">
+        <div class="flex flex-col justify-center items-center">
+            <div class="relative flip-card w-48 h-48">
+                <div class="flip-inner relative w-full h-full"><!-- Front Face -->
+                    <div class="flip-front absolute w-48 h-48 text-white rounded-full object-cover"><img
+                            src="LOGO DFPL.png" alt="AAYS Logo" class="rounded-full object-fit"></div>
+                    <!-- Back Face -->
+                    <div class="flip-back absolute w-48 h-48 text-white rounded-full"><img
+                            src="Auctionarenalogo.png" alt="Auction-Arena Logo"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div>
+            <button id="assignButton" class="btn btn-primary btn-sm text-center ml-3">SPIN THE WHEEL</button>
+            <div class="mt-4">
+                <video id="lotteryVideo" width="180" height="180" preload="auto" class="rounded-lg shadow-lg">
+                    <source src="lottery_animation.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        <div id="groupsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 w-auto p-2"></div>
+    </main>
+
+    <div class="bubbles"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bubbleContainer = document.querySelector(".bubbles");
+        const colors = ['#ff6b6b', '#6bff9b', '#6bafff', '#ffbf69', '#d896ff']; // Different bubble colors
+        function createBubbles() {
+            for (let i = 0; i < 40; i++) {
+                let bubble = document.createElement("div");
+                bubble.classList.add("bubble");
+                let size = Math.random() * 30 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.bottom = `${Math.random() * 100}vh`; // Bubbles spread across full height
+                bubble.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                bubble.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                bubbleContainer.appendChild(bubble);
+            }
+        }
+        createBubbles();
+    });
+</script>
+
+    <footer class="text-center text-gray-600 mt-8">
+        &copy; Auction Arena 2025. All rights reserved.
+    </footer>
+
+    <script>
+        let allTeams = [
+            { name: "KASTURI SV-369", logo: "./TEAM1.png" },
+            { name: "TULSIDAS BOYS CLUB", logo: "./TEAM2.png" },
+            { name: "SOUMYA X1", logo: "./TEAM3.png" },
+            { name: "SDR BENGAL FC", logo: "./TEAM4.png" },
+            { name: "NIRUPAM FRIENDS", logo: "./TEAM5.png" },
+            { name: "NABARUN ATHLETIC CLUB", logo: "./TEAM6.png" },
+            { name: "A-Z", logo: "./TEAM7.png" },
+            { name: "NEPALIPARA FC", logo: "./TEAM8.png" },
+            { name: "AYANTIKA FRIENDS", logo: "./TEAM9.png" },
+            { name: "SINGH ENTERPRISE", logo: "./TEAM10.png" },
+            { name: "SHER-E-BENGAL", logo: "./TEAM11.png" },
+            { name: "YOUNG BENGAL NIYAZ X1", logo: "./TEAM12.png" }
+        ];
+        
+        let assignedTeams = [];
+        let currentGroupIndex = 0;
+        let video = document.getElementById("lotteryVideo");
+
+        document.getElementById("assignButton").addEventListener("click", function () {
+            let numGroups = 4;
+            let totalTeams = 12;
+
+            if (assignedTeams.length === 0) {
+                assignedTeams = [...allTeams.slice(0, totalTeams)].sort(() => 0.5 - Math.random());
+            }
+
+            if (assignedTeams.length === 0) {
+                alert("All teams have been assigned!");
+                return;
+            }
+
+            video.classList.remove("hidden");
+            video.play();
+            document.getElementById("assignButton").disabled = true;
+
+            video.onended = function () {
+                let selectedTeam = assignedTeams.shift();
+                let groupsContainer = document.getElementById("groupsContainer");
+                let groupElements = groupsContainer.getElementsByClassName("group");
+
+                if (groupElements.length === 0) {
+                    groupsContainer.innerHTML = "";
+                    for (let i = 0; i < numGroups; i++) {
+                        let groupElement = document.createElement("div");
+                        groupElement.classList.add("card", "bg-base-100", "shadow-xl", "p-2", "text-center", "group", "bg-opacity-20");
+                        groupElement.innerHTML = `<h2 class='text-xl font-bold text-secondary'>Group ${String.fromCharCode(65 + i)}</h2><ul id='group${i}'></ul>`;
+                        groupsContainer.appendChild(groupElement);
+                    }
+                }
+
+                let targetGroup = document.getElementById(`group${currentGroupIndex}`);
+                let listItem = document.createElement("li");
+                listItem.classList.add("flex", "items-center", "text-lg", "font-semibold", "text-primary", "gap-2", "mt-3");
+
+                let img = document.createElement("img");
+                img.src = selectedTeam.logo;
+                img.alt = selectedTeam.name;
+                img.classList.add("w-8", "h-8", "rounded-full");
+
+                let span = document.createElement("span");
+                span.textContent = selectedTeam.name;
+
+                listItem.appendChild(img);
+                listItem.appendChild(span);
+                targetGroup.appendChild(listItem);
+
+                currentGroupIndex = (currentGroupIndex + 1) % numGroups;
+
+                if (assignedTeams.length === 0) {
+                    document.getElementById("assignButton").disabled = true;
+                } else {
+                    document.getElementById("assignButton").disabled = false;
+                }
+            };
+        });
+    </script>
+</body>
+</html>
